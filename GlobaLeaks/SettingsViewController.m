@@ -104,13 +104,22 @@
 {
     if (buttonIndex == 1 && [textField.text length] != 0){
         if (alertView.tag == 0) {
-            //TODO CUT LAST / if present
-            //TODO flush cache in nsuserdefaults
-            [defaults setObject:textField.text forKey:@"Site"];
-        }
+            NSString *newURL;
+            if ([[textField.text substringFromIndex: [textField.text length] - 1] isEqualToString:@"/"])
+                newURL = [textField.text substringToIndex: [textField.text length]-1];
+            else
+                newURL = textField.text;
+            
+            if (![newURL isEqualToString:[defaults stringForKey:@"Site"]]){
+                NSString *domainName = [[NSBundle mainBundle] bundleIdentifier];
+                [defaults removePersistentDomainForName:domainName];
+            }            
+            [defaults setObject:newURL forKey:@"Site"];
+         }
         else {
             [defaults setInteger:[textField.text integerValue] forKey:@"Cache"];
         }
+        [defaults synchronize];
         [table reloadData];
     }
 }

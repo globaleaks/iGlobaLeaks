@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED0F098717AD4E5000CF1113 /* tor_off.png in Resources */ = {isa = PBXBuildFile; fileRef = ED0F098517AD4E5000CF1113 /* tor_off.png */; };
+		ED0F098817AD4E5000CF1113 /* tor_on.png in Resources */ = {isa = PBXBuildFile; fileRef = ED0F098617AD4E5000CF1113 /* tor_on.png */; };
 		ED15C37C1795FEF100B05817 /* biglogo.png in Resources */ = {isa = PBXBuildFile; fileRef = ED15C37A1795FEF100B05817 /* biglogo.png */; };
 		ED15C37D1795FEF100B05817 /* biglogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ED15C37B1795FEF100B05817 /* biglogo@2x.png */; };
 		ED1A767017A44B98005A1302 /* globaleaks_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = ED1A766F17A44B98005A1302 /* globaleaks_logo.png */; };
@@ -27,7 +29,6 @@
 		ED1E7FA41792EAB400BECED7 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ED1E7FA31792EAB400BECED7 /* Icon.png */; };
 		ED1E7FA61792EAB600BECED7 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ED1E7FA51792EAB600BECED7 /* Icon@2x.png */; };
 		ED1E7FA81792EABC00BECED7 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = ED1E7FA71792EABC00BECED7 /* Icon-72.png */; };
-		ED1E7FAA1792EAC000BECED7 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ED1E7FA91792EAC000BECED7 /* Icon-72@2x.png */; };
 		ED1E7FAD1792EC0F00BECED7 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED1E7FAC1792EC0F00BECED7 /* MenuViewController.m */; };
 		ED1E7FB01792EC1B00BECED7 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED1E7FAF1792EC1B00BECED7 /* MainViewController.m */; };
 		ED1E7FB61792F93400BECED7 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED1E7FB51792F93400BECED7 /* SettingsViewController.m */; };
@@ -58,9 +59,12 @@
 		EDED0EC917960CF900C766A2 /* Search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EDED0EBF17960CF900C766A2 /* Search@2x.png */; };
 		EDED0ECA17960CF900C766A2 /* Whistle.png in Resources */ = {isa = PBXBuildFile; fileRef = EDED0EC017960CF900C766A2 /* Whistle.png */; };
 		EDED0ECB17960CF900C766A2 /* Whistle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EDED0EC117960CF900C766A2 /* Whistle@2x.png */; };
+		EDEFFD3C17AE65D600B6BA0D /* Icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = EDEFFD3B17AE65D500B6BA0D /* Icon-144.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		ED0F098517AD4E5000CF1113 /* tor_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tor_off.png; sourceTree = "<group>"; };
+		ED0F098617AD4E5000CF1113 /* tor_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tor_on.png; sourceTree = "<group>"; };
 		ED15C37A1795FEF100B05817 /* biglogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = biglogo.png; sourceTree = "<group>"; };
 		ED15C37B1795FEF100B05817 /* biglogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "biglogo@2x.png"; sourceTree = "<group>"; };
 		ED1A766F17A44B98005A1302 /* globaleaks_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = globaleaks_logo.png; sourceTree = "<group>"; };
@@ -88,7 +92,6 @@
 		ED1E7FA31792EAB400BECED7 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
 		ED1E7FA51792EAB600BECED7 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "../Icon@2x.png"; sourceTree = "<group>"; };
 		ED1E7FA71792EABC00BECED7 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "../Icon-72.png"; sourceTree = "<group>"; };
-		ED1E7FA91792EAC000BECED7 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72@2x.png"; path = "../Icon-72@2x.png"; sourceTree = "<group>"; };
 		ED1E7FAB1792EC0F00BECED7 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		ED1E7FAC1792EC0F00BECED7 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		ED1E7FAE1792EC1B00BECED7 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -129,6 +132,7 @@
 		EDED0EBF17960CF900C766A2 /* Search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Search@2x.png"; sourceTree = "<group>"; };
 		EDED0EC017960CF900C766A2 /* Whistle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Whistle.png; sourceTree = "<group>"; };
 		EDED0EC117960CF900C766A2 /* Whistle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Whistle@2x.png"; sourceTree = "<group>"; };
+		EDEFFD3B17AE65D500B6BA0D /* Icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-144.png"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,7 +215,7 @@
 		ED1E7F651792E67300BECED7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				ED1E7FA91792EAC000BECED7 /* Icon-72@2x.png */,
+				EDEFFD3B17AE65D500B6BA0D /* Icon-144.png */,
 				ED1E7FA71792EABC00BECED7 /* Icon-72.png */,
 				ED1E7FA51792EAB600BECED7 /* Icon@2x.png */,
 				ED1E7FA31792EAB400BECED7 /* Icon.png */,
@@ -241,6 +245,8 @@
 		ED58729A1795C8690078D2AA /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				ED0F098517AD4E5000CF1113 /* tor_off.png */,
+				ED0F098617AD4E5000CF1113 /* tor_on.png */,
 				ED8D630A17A681FE0051E1A1 /* send.png */,
 				ED1A766F17A44B98005A1302 /* globaleaks_logo.png */,
 				EDED0EB4179609C900C766A2 /* Settings.png */,
@@ -345,7 +351,6 @@
 				ED1E7FA41792EAB400BECED7 /* Icon.png in Resources */,
 				ED1E7FA61792EAB600BECED7 /* Icon@2x.png in Resources */,
 				ED1E7FA81792EABC00BECED7 /* Icon-72.png in Resources */,
-				ED1E7FAA1792EAC000BECED7 /* Icon-72@2x.png in Resources */,
 				ED58729E1795CEB20078D2AA /* logo.png in Resources */,
 				ED5872A01795D0740078D2AA /* logo@2x.png in Resources */,
 				ED15C37C1795FEF100B05817 /* biglogo.png in Resources */,
@@ -367,6 +372,9 @@
 				ED373C9C179984F300501136 /* defaults.plist in Resources */,
 				ED1A767017A44B98005A1302 /* globaleaks_logo.png in Resources */,
 				ED8D630D17A681FE0051E1A1 /* send.png in Resources */,
+				ED0F098717AD4E5000CF1113 /* tor_off.png in Resources */,
+				ED0F098817AD4E5000CF1113 /* tor_on.png in Resources */,
+				EDEFFD3C17AE65D600B6BA0D /* Icon-144.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

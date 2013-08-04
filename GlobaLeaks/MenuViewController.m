@@ -128,17 +128,26 @@
     //self.firstName.text = name;
     
     NSString* phone = nil;
-    ABMultiValueRef phoneNumbers = ABRecordCopyValue(person,
-                                                     kABPersonPhoneProperty);
+    ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
+    
+    //TODO: if multiple numbers, let the user choose
     if (ABMultiValueGetCount(phoneNumbers) > 0) {
         phone = (__bridge_transfer NSString*)
         ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
     } else {
         phone = @"[None]";
     }
-    //textField.text = [phone stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
     //remove all ( ) - and spaes
-    NSLog(@"%@", [phone stringByReplacingOccurrencesOfString:@" " withString:@""]);
+    phone = [phone stringByReplacingOccurrencesOfString:@" " withString:@""];
+    phone = [phone stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    phone = [phone stringByReplacingOccurrencesOfString:@")" withString:@""];
+    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    NSLog(@"%@", phone);
+    //textField.text = phone;
+
+    //GLClient *client = [[GLClient alloc] init];
+    //[client login:phone];
     CFRelease(phoneNumbers);
 }
 @end

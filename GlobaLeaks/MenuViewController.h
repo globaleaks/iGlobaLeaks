@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ECSlidingViewController.h"
 #import <AddressBookUI/AddressBookUI.h>
+#import "GLClient.h"
 
 @interface MenuViewController : UIViewController <UITableViewDataSource, UITabBarControllerDelegate, UIAlertViewDelegate, ABPeoplePickerNavigationControllerDelegate> {
     UITextField *textField;

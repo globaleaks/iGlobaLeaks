@@ -17,4 +17,7 @@
 -(NSDictionary*)sendSubmission:(Submission*)s;
 -(NSDictionary*)updateSubmission:(Submission*)s;
 -(NSString*)uploadImage:(UIImage*)image submissionID:(NSString*)submisssion_id;
+-(NSDictionary*)login:(NSString*)receipt;
+-(NSDictionary*)logout;
+-(NSDictionary*)fetchTip;
 @end

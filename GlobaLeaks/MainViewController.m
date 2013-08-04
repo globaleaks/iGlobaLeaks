@@ -24,7 +24,7 @@
     BOOL myBool = YES;
     NSNumber *passedValue = [NSNumber numberWithBool:myBool];
     //dispatch_async(dispatch_get_main_queue(), ^{
-        [self loadNode:passedValue];
+    [self loadNode:passedValue];
     //});
     //[NSThread detachNewThreadSelector:@selector(loadNode:) toTarget:self withObject:passedValue];
 }
@@ -48,24 +48,26 @@
 
 -(void)loadNode:(NSNumber*)use_cache{
     [self showActivityIndicator];
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        dispatch_async(queue, ^{
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    dispatch_async(queue, ^{
         NSDictionary *json = [client loadNode:[use_cache boolValue]];
-            //TODO keep downloading those in the main view?
-            dispatch_async(dispatch_get_main_queue(), ^{
-        if(json != nil){
-            titleLabel.text = [json objectForKey:@"name"];
-            descriptionLabel.text = [json objectForKey:@"description"];
-                    }
-        else {
-            titleLabel.text = @"ERROR!";
-            descriptionLabel.text = [NSString stringWithFormat:@"Cannot connect to GlobaLeaks node %@ Is it the right URL? Edit GLiOS settings, prepend \"http://\" or \"https://\" protocol and verify that your node is up and running.", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"]];
-        }
-                UIImage *img = [UIImage imageWithData:[client getImage:[use_cache boolValue] withId:@"globaleaks_logo"]];
-        if (img != nil) [logo setImage:img];
-        [client loadData:[use_cache boolValue] ofType:@"receivers"];
-        [client loadData:[use_cache boolValue] ofType:@"contexts"];
-        [self showReloadButton];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(json != nil){
+                titleLabel.text = [json objectForKey:@"name"];
+                descriptionLabel.text = [json objectForKey:@"description"];
+            }
+            else {
+                titleLabel.text = @"ERROR!";
+                descriptionLabel.text = [NSString stringWithFormat:@"Cannot connect to GlobaLeaks node %@ Is it the right URL? Edit iGlobaLeaks settings, prepend \"http://\" or \"https://\" protocol and verify that your node is up and running.", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"]];
+            }
+            NSData * imgData = [client getImage:[use_cache boolValue] withId:@"globaleaks_logo"];
+            if (imgData != nil){
+                UIImage *img = [UIImage imageWithData:imgData];
+                [logo setImage:img];
+            }            
+            [client loadData:[use_cache boolValue] ofType:@"receivers"];
+            [client loadData:[use_cache boolValue] ofType:@"contexts"];
+            [self showReloadButton];
         });
     });
 }

@@ -457,6 +457,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
+        NSLog(@"%@", result);
         if (result == nil) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Error sending your request.", @"") delegate:nil cancelButtonTitle:NSLocalizedString(@"Close", @"") otherButtonTitles:nil ];
             [alertView show];
