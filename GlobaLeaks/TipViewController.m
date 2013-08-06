@@ -64,7 +64,7 @@
     else if (section == 2)
         return [[s files] count]+1;
     else if (section == 3)
-        return [[[s comments] count]+1;
+        return [[s comments] count]+1;
     else
         return 0;
 }
@@ -106,15 +106,15 @@
             break;
         }
         case 3: {
-            if(indexPath.row == [[s files] count]){
+            if(indexPath.row == [[s comments] count]){
                 cell = [tableView dequeueReusableCellWithIdentifier:@"Basic"];
                 cell.textLabel.text = NSLocalizedString(@"Add Comment" , @"");
             }
             else {
                 NSDictionary *dict = [[s comments] objectAtIndex:indexPath.row];
                 cell = [tableView dequeueReusableCellWithIdentifier:@"Sub"];
-                cell.textLabel.text = [NSString stringWithFormat:@"Author: %@",[dict objectForKey:@"author"]];
-                cell.detailTextLabel.text =[NSString stringWithFormat:@"content: %@",[dict objectForKey:@"content"]];
+                cell.textLabel.text =[NSString stringWithFormat:@"content: %@",[dict objectForKey:@"content"]];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"author: %@",[dict objectForKey:@"author"]];
             }
             break;
         }
@@ -370,7 +370,7 @@
             [alertView show];
             NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:[s comments]];
             [temp addObject:response];
-            [s setFiles:temp];
+            [s setComments:temp];
             [table reloadData];
         }
         else {
