@@ -85,7 +85,7 @@
 
 -(NSDictionary*)createSubmission:(Submission*)s{
     NSString *jsonRequest = [s toString];
-    NSLog(@"%@", [s toString]);
+    NSLog(@"create submission: %@", [s toString]);
     NSData *requestData = [NSData dataWithBytes:[jsonRequest UTF8String] length:[jsonRequest length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/submission", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"]]]];
@@ -96,7 +96,7 @@
     [request setHTTPBody: requestData];
     NSData *response = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
     NSString *stringResponse = [[NSString alloc] initWithData: response encoding: NSUTF8StringEncoding];
-    NSLog(@"%@", stringResponse);
+    NSLog(@"response [cs]: %@", stringResponse);
     if (response != nil){
         NSDictionary* json = [NSJSONSerialization
                               JSONObjectWithData:response
@@ -109,7 +109,7 @@
 
 -(NSDictionary*)sendSubmission:(Submission*)s{
     NSString *jsonRequest = [s toString];
-    NSLog(@"%@", [s toString]);
+    NSLog(@"send submission: %@", [s toString]);
     NSData *requestData = [NSData dataWithBytes:[jsonRequest UTF8String] length:[jsonRequest length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/submission", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"]]]];
@@ -123,7 +123,7 @@
     [request setHTTPBody: requestData];
     NSData *response = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
     NSString *stringResponse = [[NSString alloc] initWithData: response encoding: NSUTF8StringEncoding];
-    NSLog(@"%@", stringResponse);
+    NSLog(@"response [ss]: %@", stringResponse);
     if (response != nil){
         NSDictionary* json = [NSJSONSerialization
                          JSONObjectWithData:response
@@ -136,7 +136,7 @@
 
 -(NSDictionary*)updateSubmission:(Submission*)s;{
     NSString *jsonRequest = [s toString];
-    NSLog(@"%@", [s toString]);
+    NSLog(@"update submission %@", [s toString]);
     NSData *requestData = [NSData dataWithBytes:[jsonRequest UTF8String] length:[jsonRequest length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/submission/%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"], [s submission_id]]]];
@@ -147,7 +147,7 @@
     [request setHTTPBody: requestData];
     NSData *response = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
     NSString *stringResponse = [[NSString alloc] initWithData: response encoding: NSUTF8StringEncoding];
-    NSLog(@"%@", stringResponse);
+    NSLog(@"response [us]: %@", stringResponse);
     if (response != nil){
         NSDictionary* json = [NSJSONSerialization
                               JSONObjectWithData:response
@@ -169,44 +169,79 @@
                 
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
         [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/submission/%@/file", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"], submisssion_id]]];
-
         [request setHTTPMethod:@"POST"];
         
-        NSString *boundary = @"---------------------------14737809831466499882746641449";
-        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
-        [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
-        
-        NSMutableData *body = [NSMutableData data];
-        
-        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"files[]\"; filename=\"%@.jpg\"\r\n", filename] dataUsingEncoding:NSUTF8StringEncoding]];
-        
-        [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        NSMutableData *body = [NSMutableData data];                
         [body appendData:[NSData dataWithData:imageData]];
-        [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [request setHTTPBody:body];
+        
+        [request setValue:[NSString stringWithFormat:@"attachment; filename=\"%@.png\"", filename] forHTTPHeaderField:@"Content-Disposition"];
+        [request setValue:@"image/png" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:[NSString stringWithFormat:@"%d", [imageData length]] forHTTPHeaderField:@"Content-Length"];
         
         [request setHTTPBody:body];
         NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-        
         NSString *returnString = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
-        NSLog(@"%@", returnString);
+        NSLog(@"response [ui]: %@", returnString);
         
         if (response != nil){
             NSArray* json = [NSJSONSerialization
                                   JSONObjectWithData:response
                                   options:kNilOptions
                                   error:nil];
-            NSDictionary *dict = [json objectAtIndex:0];
-            NSLog(@"%@", [dict objectForKey:@"id"]);
-            return [dict objectForKey:@"id"];
+            if ([json count] > 0){
+                //TODO {"error_message": "Not Authenticated", "error_code": 30, "arguments": []}
+                NSDictionary *dict = [json objectAtIndex:0];
+                NSLog(@"%@", [dict objectForKey:@"id"]);
+                return [dict objectForKey:@"id"];
+            }
+        }
+    }
+    return nil;
+}
+
+-(NSDictionary*)addTipImage:(UIImage*)image submissionID:(NSString*)submisssion_id session:(NSString*)session_id{
+    NSData *imageData = UIImagePNGRepresentation(image);
+    
+    if (imageData != nil)
+    {
+        NSTimeInterval timeStamp = [[NSDate date] timeIntervalSince1970];
+        NSNumber *timeStampObj = [NSNumber numberWithDouble: timeStamp];
+        NSString *filename = [NSString stringWithFormat:@"%d", [timeStampObj integerValue]];
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/tip/%@/upload", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"], submisssion_id]]];
+        [request setHTTPMethod:@"POST"];
+        
+        NSMutableData *body = [NSMutableData data];
+        [body appendData:[NSData dataWithData:imageData]];
+        [request setValue:session_id forHTTPHeaderField:@"X-Session"];
+
+        [request setValue:[NSString stringWithFormat:@"attachment; filename=\"%@.png\"", filename] forHTTPHeaderField:@"Content-Disposition"];
+        [request setValue:@"image/png" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:[NSString stringWithFormat:@"%d", [imageData length]] forHTTPHeaderField:@"Content-Length"];
+        
+        [request setHTTPBody:body];
+        NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+        NSString *returnString = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
+        NSLog(@"response [ui]: %@", returnString);
+        
+        if (response != nil){
+            NSArray* json = [NSJSONSerialization
+                             JSONObjectWithData:response
+                             options:kNilOptions
+                             error:nil];
+            if ([json count] > 0){
+                NSDictionary *dict = [json objectAtIndex:0];
+                return dict;
+            }
         }
     }
     return nil;
 }
 
 -(NSDictionary*)login:(NSString*)receipt{
-    NSString *jsonRequest = [NSString stringWithFormat:@"{\"username\":\"\",\"password\":\"%@\",\"role\":\"wb\"}", receipt];
+    NSString *jsonRequest = [NSString stringWithFormat:@"{\"username\":\"wb\",\"password\":\"%@\",\"role\":\"wb\"}", receipt];
+    NSLog(@"%@", jsonRequest);
     NSData *requestData = [NSData dataWithBytes:[jsonRequest UTF8String] length:[jsonRequest length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/authentication", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"]]]];
@@ -233,7 +268,6 @@
     [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/authentication", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"]]]];
     [request setHTTPMethod:@"DELETE"];
     [request setTimeoutInterval:60];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     NSData *response = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
     NSString *stringResponse = [[NSString alloc] initWithData: response encoding: NSUTF8StringEncoding];
     NSLog(@"%@", stringResponse);
@@ -247,12 +281,12 @@
     return nil;
 }
 
--(NSDictionary*)fetchTip{
+-(NSDictionary*)fetchTip:(NSString*)tip_id session:(NSString*)session_id{
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/tip/5e1cb9bb-3fd0-6557-b775-4c153ad7ca82", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"]]]];
+    [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/tip/%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"], tip_id]]];
     [request setHTTPMethod:@"GET"];
-    [request setTimeoutInterval:60];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setTimeoutInterval:90];
+    [request setValue:session_id forHTTPHeaderField:@"X-Session"];
     NSData *response = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
     NSString *stringResponse = [[NSString alloc] initWithData: response encoding: NSUTF8StringEncoding];
     NSLog(@"%@", stringResponse);
@@ -265,4 +299,49 @@
     }
     return nil;
 }
+
+-(NSArray*)fetchTipData:(NSString*)tip_id session:(NSString*)session_id ofType:(NSString*)type{
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/tip/%@/%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"], tip_id, type]]];
+    [request setHTTPMethod:@"GET"];
+    [request setTimeoutInterval:90];
+    [request setValue:session_id forHTTPHeaderField:@"X-Session"];
+    NSData *response = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
+    NSString *stringResponse = [[NSString alloc] initWithData: response encoding: NSUTF8StringEncoding];
+    NSLog(@"%@", stringResponse);
+    if (response != nil){
+        NSArray* json = [NSJSONSerialization
+                              JSONObjectWithData:response
+                              options:kNilOptions
+                              error:nil];
+        return json;
+    }
+    return nil;
+}
+
+-(NSDictionary*)addTipComment:(NSString*)comment submissionID:(NSString*)submisssion_id session:(NSString*)session_id{
+    NSString *jsonRequest = [NSString stringWithFormat:@"{\"tip_id\":\"%@\",\"content\":\"%@\"}", submisssion_id, comment];
+    NSLog(@"%@", jsonRequest);
+    NSData *requestData = [NSData dataWithBytes:[jsonRequest UTF8String] length:[jsonRequest length]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/tip/%@/comments", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"], submisssion_id]]];
+    [request setHTTPMethod:@"POST"];
+    [request setTimeoutInterval:60];
+    [request setValue:session_id forHTTPHeaderField:@"X-Session"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody: requestData];
+    NSData *response = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
+    NSString *stringResponse = [[NSString alloc] initWithData: response encoding: NSUTF8StringEncoding];
+    NSLog(@"%@", stringResponse);
+    if (response != nil){
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:response
+                              options:kNilOptions
+                              error:nil];
+        return json;
+    }
+    return nil;
+}
+
 @end

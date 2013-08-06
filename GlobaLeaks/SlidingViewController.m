@@ -26,6 +26,9 @@
     }
     
     self.topViewController = [storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    //[[HITorManager defaultManager] start];
+    //[HITorManager defaultManager].torRouting = YES;
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation

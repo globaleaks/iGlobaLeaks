@@ -60,15 +60,19 @@
                 titleLabel.text = @"ERROR!";
                 descriptionLabel.text = [NSString stringWithFormat:@"Cannot connect to GlobaLeaks node %@ Is it the right URL? Edit iGlobaLeaks settings, prepend \"http://\" or \"https://\" protocol and verify that your node is up and running.", [[NSUserDefaults standardUserDefaults] stringForKey:@"Site"]];
             }
+            });
             NSData * imgData = [client getImage:[use_cache boolValue] withId:@"globaleaks_logo"];
             if (imgData != nil){
                 UIImage *img = [UIImage imageWithData:imgData];
-                [logo setImage:img];
-            }            
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [logo setImage:img];
+                });
+            }
             [client loadData:[use_cache boolValue] ofType:@"receivers"];
             [client loadData:[use_cache boolValue] ofType:@"contexts"];
+            dispatch_async(dispatch_get_main_queue(), ^{
             [self showReloadButton];
-        });
+            });
     });
 }
 

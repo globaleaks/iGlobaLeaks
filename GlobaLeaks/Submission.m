@@ -13,6 +13,7 @@
 @synthesize context_gus;
 @synthesize wb_fields;
 @synthesize files;
+@synthesize comments;
 @synthesize finalize;
 @synthesize receivers;
 @synthesize submission_id;

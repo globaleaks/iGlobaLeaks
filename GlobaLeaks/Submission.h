@@ -14,6 +14,7 @@
 @property (nonatomic, retain) NSString * submission_id;
 @property (nonatomic, retain) NSDictionary * wb_fields;
 @property (nonatomic, retain) NSArray * files;
+@property (nonatomic, retain) NSArray * comments;
 @property (nonatomic, retain) NSString * finalize;
 @property (nonatomic, retain) NSArray * receivers;
 

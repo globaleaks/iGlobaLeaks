@@ -17,7 +17,11 @@
 -(NSDictionary*)sendSubmission:(Submission*)s;
 -(NSDictionary*)updateSubmission:(Submission*)s;
 -(NSString*)uploadImage:(UIImage*)image submissionID:(NSString*)submisssion_id;
+-(NSDictionary*)addTipImage:(UIImage*)image submissionID:(NSString*)submisssion_id session:(NSString*)session_id;
 -(NSDictionary*)login:(NSString*)receipt;
 -(NSDictionary*)logout;
--(NSDictionary*)fetchTip;
+-(NSDictionary*)fetchTip:(NSString*)tip_id session:(NSString*)session_id;
+-(NSArray*)fetchTipData:(NSString*)tip_id session:(NSString*)session_id ofType:(NSString*)type;
+-(NSDictionary*)addTipComment:(NSString*)comment submissionID:(NSString*)submisssion_id session:(NSString*)session_id;
+
 @end

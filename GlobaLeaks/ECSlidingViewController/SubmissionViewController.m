@@ -27,20 +27,26 @@
     currentReceivers = [[NSMutableArray alloc] init];
     submission = [Submission new];
     [submission setFinalize:@"false"];
-    [self loadReceiver];
+    [self loadReceiver:nil];
 }
 
--(void)loadReceiver {
+-(void)loadReceiver:(id) sender {
+    Boolean use_cache;
+    if (sender != nil) use_cache = NO;
+    else use_cache = YES;
+        
     [self showActivityIndicator];
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(queue, ^{
-        receivers = [client loadData:true ofType:@"receivers"];
-        contexts = [client loadData:true ofType:@"contexts"];
+        receivers = [client loadData:use_cache ofType:@"receivers"];
+        contexts = [client loadData:use_cache ofType:@"contexts"];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [submission setValue:[[contexts objectAtIndex:currentContext] valueForKey:@"context_gus"] forKey:@"context_gus"];
+            if ([contexts count] > 0){
+                [submission setValue:[[contexts objectAtIndex:currentContext] valueForKey:@"context_gus"] forKey:@"context_gus"];
+                [self countReceivers];
+                [self createFields];
+            }
             [self showReloadButton];
-            [self countReceivers];
-            [self createFields];
             [table reloadData];
         });
     });
@@ -50,7 +56,7 @@
     UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc]
                                     initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                     target:self
-                                    action:@selector(loadReceiver)];
+                                    action:@selector(loadReceiver:)];
     navItem.rightBarButtonItem = refreshItem;
 }
 
@@ -89,6 +95,8 @@
         Field *temp = [Field new];
         for (NSString *param in dictionary) {
             [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+                //TODO
+                if(![(NSString *)key isEqualToString:@"key"])
                 [temp setValue:obj forKey:(NSString *)key];
             }];
             [temp setValue:@"" forKey:@"value"];
@@ -97,8 +105,9 @@
     }
 }
 
+
 -(void)downloadImages:(NSString*)receiver_id{
-    UIImage *img = [UIImage imageWithData:[client getImage:[[NSNumber numberWithBool:YES] boolValue] withId:[NSString stringWithFormat:@"%@_120",receiver_id]]];
+    UIImage *img = [UIImage imageWithData:[client getImage:[[NSNumber numberWithBool:YES] boolValue] withId:receiver_id]];
     if (img != nil)
         [images setObject:img forKey:receiver_id];
     
@@ -432,8 +441,9 @@
                 [table reloadData];
         }
         else {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Error uploading your file.", @"") delegate:nil cancelButtonTitle:NSLocalizedString(@"Close", @"") otherButtonTitles:nil ];
-                [alertView show];
+            [loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Error uploading your file.", @"") delegate:nil cancelButtonTitle:NSLocalizedString(@"Close", @"") otherButtonTitles:nil ];
+            [alertView show];
         }
         });
     }

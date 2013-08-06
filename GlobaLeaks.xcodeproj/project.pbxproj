@@ -45,6 +45,7 @@
 		ED8D630D17A681FE0051E1A1 /* send.png in Resources */ = {isa = PBXBuildFile; fileRef = ED8D630A17A681FE0051E1A1 /* send.png */; };
 		ED8D631317A686010051E1A1 /* Field.m in Sources */ = {isa = PBXBuildFile; fileRef = ED8D631217A686010051E1A1 /* Field.m */; };
 		ED8D631617A69C830051E1A1 /* Submission.m in Sources */ = {isa = PBXBuildFile; fileRef = ED8D631517A69C830051E1A1 /* Submission.m */; };
+		EDD81A8317B0F74700F7A934 /* TipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD81A8217B0F74700F7A934 /* TipViewController.m */; };
 		EDED0EAE179608A000C766A2 /* menu_button_three_lines.png in Resources */ = {isa = PBXBuildFile; fileRef = EDED0EAC179608A000C766A2 /* menu_button_three_lines.png */; };
 		EDED0EAF179608A000C766A2 /* menu_button_three_lines@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EDED0EAD179608A000C766A2 /* menu_button_three_lines@2x.png */; };
 		EDED0EB6179609C900C766A2 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = EDED0EB4179609C900C766A2 /* Settings.png */; };
@@ -118,6 +119,8 @@
 		ED8D631217A686010051E1A1 /* Field.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Field.m; sourceTree = "<group>"; };
 		ED8D631417A69C830051E1A1 /* Submission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Submission.h; sourceTree = "<group>"; };
 		ED8D631517A69C830051E1A1 /* Submission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Submission.m; sourceTree = "<group>"; };
+		EDD81A8117B0F74700F7A934 /* TipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TipViewController.h; sourceTree = "<group>"; };
+		EDD81A8217B0F74700F7A934 /* TipViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TipViewController.m; sourceTree = "<group>"; };
 		EDED0EAC179608A000C766A2 /* menu_button_three_lines.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_button_three_lines.png; sourceTree = "<group>"; };
 		EDED0EAD179608A000C766A2 /* menu_button_three_lines@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_button_three_lines@2x.png"; sourceTree = "<group>"; };
 		EDED0EB4179609C900C766A2 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
@@ -208,6 +211,8 @@
 				ED373C9E179989F700501136 /* GLClient.m */,
 				ED373CA017998D2400501136 /* SubmissionViewController.h */,
 				ED373CA117998D2500501136 /* SubmissionViewController.m */,
+				EDD81A8117B0F74700F7A934 /* TipViewController.h */,
+				EDD81A8217B0F74700F7A934 /* TipViewController.m */,
 			);
 			path = GlobaLeaks;
 			sourceTree = "<group>";
@@ -400,6 +405,7 @@
 				ED6CEC35179EF9C900E229BF /* SBTableAlert.m in Sources */,
 				ED8D631317A686010051E1A1 /* Field.m in Sources */,
 				ED8D631617A69C830051E1A1 /* Submission.m in Sources */,
+				EDD81A8317B0F74700F7A934 /* TipViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,6 +500,10 @@
 		ED1E7F821792E67300BECED7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/Tor-enudxesfqelysefowxezzzksvipy/Build/Products/Debug\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GlobaLeaks/GlobaLeaks-Prefix.pch";
 				INFOPLIST_FILE = "GlobaLeaks/GlobaLeaks-Info.plist";
@@ -505,6 +515,10 @@
 		ED1E7F831792E67300BECED7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/Tor-enudxesfqelysefowxezzzksvipy/Build/Products/Debug\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GlobaLeaks/GlobaLeaks-Prefix.pch";
 				INFOPLIST_FILE = "GlobaLeaks/GlobaLeaks-Info.plist";
