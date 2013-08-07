@@ -32,6 +32,9 @@
     IBOutlet UINavigationItem *navItem;
     Submission *submission;
     UIAlertView *loadingAlert;
+    Field *field;
+    NSMutableArray *multiselect;
+    NSMutableDictionary *checkbox;
 }
 
 - (IBAction)revealMenu:(id)sender;

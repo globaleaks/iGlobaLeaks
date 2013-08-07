@@ -22,10 +22,14 @@
     NSString *fields = @"";
     NSString *toreturn;
     for (id key in wb_fields) {
-        fields = [fields stringByAppendingFormat:@"\"%@\":\"%@\",", key, [wb_fields objectForKey:key]];
+        if ([[[wb_fields objectForKey:key] substringToIndex:1] isEqualToString:@"{"] || [[[wb_fields objectForKey:key] substringToIndex:1] isEqualToString:@"["])
+            fields = [fields stringByAppendingFormat:@"\"%@\":%@,", key, [wb_fields objectForKey:key]];
+        else
+            fields = [fields stringByAppendingFormat:@"\"%@\":\"%@\",", key, [wb_fields objectForKey:key]];
     }
     if ( [fields length] > 0)
         fields = [fields substringToIndex:[fields length] - 1];
+    
     if ([files count] >0 )
         toreturn = [NSString stringWithFormat:@"{\"context_gus\":\"%@\",\"wb_fields\":{%@},\"finalize\":%@,\"files\":[\"%@\"],\"receivers\":[\"%@\"]}", context_gus, fields, finalize, [files componentsJoinedByString:@"\", \""], [receivers componentsJoinedByString:@"\", \""]];
     else

@@ -89,7 +89,7 @@
             Field *f = [fields objectAtIndex:indexPath.row];
             cell = [tableView dequeueReusableCellWithIdentifier:@"Sub"];
             cell.textLabel.text = [f name];
-            cell.detailTextLabel.text =[f value];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", [f value]];
             break;
         }
         case 2: {

@@ -25,6 +25,8 @@
     fileIDs = [[NSMutableArray alloc] init];
     images = [[NSMutableDictionary alloc] init];
     currentReceivers = [[NSMutableArray alloc] init];
+    checkbox = [[NSMutableDictionary alloc] init];
+    multiselect = [[NSMutableArray alloc] init];
     submission = [Submission new];
     [submission setFinalize:@"false"];
     [self loadReceiver:nil];
@@ -176,16 +178,16 @@
             break;
         }
         case 2: {
-            Field *field = [fields objectAtIndex:indexPath.row];
+            Field *f = [fields objectAtIndex:indexPath.row];
             cell = [tableView dequeueReusableCellWithIdentifier:@"Sub"];
-            if ([[field required] boolValue]) cell.textLabel.text = [NSString stringWithFormat:@"%@ *", [field name]];
-            else cell.textLabel.text = [field name];
-            if (![[field value] isEqualToString:@""] && [field value] != nil)
-                cell.detailTextLabel.text = [field value];
+            if ([[f required] boolValue]) cell.textLabel.text = [NSString stringWithFormat:@"%@ *", [f name]];
+            else cell.textLabel.text = [f name];
+            if (![[f value] isEqualToString:@""] && [f value] != nil)
+                cell.detailTextLabel.text = [f value];
             else
-                cell.detailTextLabel.text = [field hint];
+                cell.detailTextLabel.text = [f hint];
             
-            if ([field value] == nil)
+            if ([f value] == nil)
                 cell.backgroundColor = [UIColor redColor];
             else
                 cell.backgroundColor = [UIColor whiteColor];
@@ -254,7 +256,7 @@
             break;
         }
         case 2:{
-            Field *field = [fields objectAtIndex:indexPath.row];
+            field = [fields objectAtIndex:indexPath.row];
             if ([[field type] isEqualToString:@"text"]){
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[field name] message:[field hint] delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
                 alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -566,8 +568,9 @@
 		// Note: SBTableAlertCell
 		cell = [[SBTableAlertCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 	}
-    Field *field = [fields objectAtIndex:indexPath.row];
-	cell.textLabel.text = [NSString stringWithFormat:@"%@",[field name]];
+    
+    NSDictionary * thisOptions = [options objectAtIndex:indexPath.row];
+	cell.textLabel.text = [NSString stringWithFormat:@"%@",[thisOptions objectForKey:@"name"]];
 	
 	return cell;
 }
@@ -580,9 +583,6 @@
 }
 
 - (NSInteger)numberOfSectionsInTableAlert:(SBTableAlert *)tableAlert {
-	//if (tableAlert.view.tag == 3)
-	//	return 2;
-	//else
     return 1;
 }
 
@@ -596,18 +596,60 @@
 #pragma mark - SBTableAlertDelegate
 
 - (void)tableAlert:(SBTableAlert *)tableAlert didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (tableAlert.type == SBTableAlertTypeMultipleSelct) {
-		UITableViewCell *cell = [tableAlert.tableView cellForRowAtIndexPath:indexPath];
-		if (cell.accessoryType == UITableViewCellAccessoryNone)
+    NSDictionary * thisOptions = [options objectAtIndex:indexPath.row];
+
+    if (tableAlert.type == SBTableAlertTypeMultipleSelct) {
+		UITableViewCell *cell = [tableAlert.tableView cellForRowAtIndexPath:indexPath];		
+        if ([[field type] isEqualToString:@"multiple"]){
+            if (cell.accessoryType == UITableViewCellAccessoryNone)
+                [multiselect addObject:[thisOptions objectForKey:@"name"]];
+            else
+                [multiselect removeObject:[thisOptions objectForKey:@"name"]];
+            NSLog(@"%@", multiselect);
+        }
+        else if ([[field type] isEqualToString:@"checkboxes"]){
+            if (cell.accessoryType == UITableViewCellAccessoryNone)
+                [checkbox setObject:@"true" forKey:[thisOptions objectForKey:@"name"]];
+            else
+                [checkbox setObject:@"false" forKey:[thisOptions objectForKey:@"name"]];
+            NSLog(@"%@", checkbox);
+        }
+        
+        if (cell.accessoryType == UITableViewCellAccessoryNone)
 			[cell setAccessoryType:UITableViewCellAccessoryCheckmark];
 		else
 			[cell setAccessoryType:UITableViewCellAccessoryNone];
-		
+        
 		[tableAlert.tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
+    else {
+        [field setValue:[thisOptions objectForKey:@"name"] forKey:@"value"];
+        [table reloadData];
+    }
 }
 
 - (void)tableAlert:(SBTableAlert *)tableAlert didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (tableAlert.type == SBTableAlertTypeMultipleSelct) {
+        if ([[field type] isEqualToString:@"multiple"]){
+            if ([multiselect count] > 0){
+            [field setValue:[NSString stringWithFormat:@"[\"%@\"]", [multiselect componentsJoinedByString:@"\", \""]] forKey:@"value"];
+            [multiselect removeAllObjects];
+            }
+        }
+        else if ([[field type] isEqualToString:@"checkboxes"]){
+            if ([checkbox count] > 0){
+                NSString *checkString = @"";
+                for (id key in checkbox) {
+                    checkString = [checkString stringByAppendingFormat:@"\"%@\":%@,", key, [checkbox objectForKey:key]];
+                }
+                if ( [checkString length] > 0)
+                    checkString = [checkString substringToIndex:[checkString length] - 1];
+            [field setValue:[NSString stringWithFormat:@"{%@}" ,checkString] forKey:@"value"];
+            [checkbox removeAllObjects];
+            }
+        }
+        [table reloadData];
+    }
 	NSLog(@"Dismissed: %i", buttonIndex);
 }
 

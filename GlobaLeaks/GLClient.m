@@ -308,7 +308,7 @@
     [request setValue:session_id forHTTPHeaderField:@"X-Session"];
     NSData *response = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
     NSString *stringResponse = [[NSString alloc] initWithData: response encoding: NSUTF8StringEncoding];
-    NSLog(@"%@", stringResponse);
+    NSLog(@"tip data [%@] %@", type, stringResponse);
     if (response != nil){
         NSArray* json = [NSJSONSerialization
                               JSONObjectWithData:response
